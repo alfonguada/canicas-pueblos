@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Conexión con TikTok</title>
+<link rel="icon" href="../logo.png"><link rel="stylesheet" href="../estilo.css">
+</head>
+<body><main>
+<header><img src="../logo.png" alt=""><h1>Conexión con TikTok</h1></header>
+<div class="card" id="out"><p>Cargando…</p></div>
+<script>
+  // TikTok vuelve aquí tras autorizar. El código solo se muestra en pantalla para copiarlo en la herramienta local;
+  // esta página no envía nada a ningún sitio.
+  const q = new URLSearchParams(location.search), out = document.getElementById('out');
+  const code = q.get('code'), err = q.get('error');
+  if (code) {
+    out.innerHTML = '<p>¡Autorizado! Copia este código y pégalo en la herramienta (caduca en unos minutos):</p><p><code id="c"></code></p><button id="b">Copiar</button>';
+    document.getElementById('c').textContent = code;
+    document.getElementById('b').onclick = () => navigator.clipboard.writeText(code).then(() => { document.getElementById('b').textContent = 'Copiado ✓'; });
+  } else if (err) {
+    out.innerHTML = '<p>TikTok no ha dado acceso: <code id="e"></code></p>';
+    document.getElementById('e').textContent = err + ' ' + (q.get('error_description') || '');
+  } else out.innerHTML = '<p>Esta página recibe la autorización de TikTok para la herramienta de publicación de @canicas.pueblos.</p>';
+</script>
+</main></body></html>
